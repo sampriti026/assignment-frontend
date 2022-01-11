@@ -1,23 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import Homepage from "./components/homepage/homepage"
+import Login from "./components/login/login"
+import Register from "./components/register/register"
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { useState } from 'react';
+import VerifyOtp from "./components/otp/verifyOtp"
+import VerifySigninOtp from "./components/otp/verifySigninOtp"
 
 function App() {
+
+  const [ user, setLoginUser] = useState({})
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            {
+              user && user._id ? <Homepage setLoginUser={setLoginUser} /> : <Login setLoginUser={setLoginUser}/>
+            }
+          </Route>
+          <Route path="/login">
+            <Login setLoginUser={setLoginUser} />
+          </Route>
+          <Route path='/verifyOtp'> <VerifyOtp setLoginUser={setLoginUser} /> </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/verifySigninOtp">
+            <VerifySigninOtp setLoginUser={setLoginUser}/>
+          </Route>
+          
+        </Switch>
+      </Router>
     </div>
   );
 }
